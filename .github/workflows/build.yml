@@ -37,16 +37,20 @@ jobs:
           swap-size-mb: 1024
           remove-dotnet: 'true'
           remove-android: 'true'
-      - name: Install build deps
+      - name: Install deb deps
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: docker.io repo
+          version: 1.0
+      - name: Build docker image for build
         shell: bash
         run: |
-          apt install docker.io repo
           mkdir ~/redroid && cd ~/redroid
           repo init -u https://github.com/remote-android/platform_manifests.git -b redroid-12.0.0 --depth=1 --git-lfs
           repo sync -c
           docker build --build-arg userid=$(id -u) --build-arg groupid=$(id -g) --build-arg username=$(id -un) -t redroid-builder .
       - name: Rollback release
-        if: failure() && inputs.release-id != '' && inputs.github-token != ''
+        if: failure() && needs.prepare_release.outputs.release_id != '' && secrets.GITHUB_TOKEN != ''
         uses: author/action-rollback@stable
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
