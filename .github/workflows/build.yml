@@ -50,7 +50,7 @@ jobs:
           repo sync -c
           docker build --build-arg userid=$(id -u) --build-arg groupid=$(id -g) --build-arg username=$(id -un) -t redroid-builder .
       - name: Rollback release
-        if: failure() && needs.prepare_release.outputs.release_id != '' && secrets.GITHUB_TOKEN != ''
+        if: failure() && needs.prepare_release.outputs.release_id != ''
         uses: author/action-rollback@stable
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
