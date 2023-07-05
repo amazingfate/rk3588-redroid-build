@@ -40,7 +40,7 @@ jobs:
       - name: Install deb deps
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: docker.io repo
+          packages: repo
           version: 1.0
       - name: Build docker image for build
         shell: bash
