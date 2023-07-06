@@ -50,6 +50,8 @@ jobs:
         run: |
           mkdir ~/redroid && cd ~/redroid
           repo init -u https://github.com/remote-android/platform_manifests.git -b redroid-12.0.0 --depth=1
+          df -h
+          du -sh /mnt/*
           repo sync -c
           docker build --build-arg userid=$(id -u) --build-arg groupid=$(id -g) --build-arg username=$(id -un) -t redroid-builder .
       - name: Rollback release
