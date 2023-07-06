@@ -54,8 +54,11 @@ jobs:
           sudo pvscan
           sudo vgdisplay
           sudo lvdisplay
-          repo sync -c
-          docker build --build-arg userid=$(id -u) --build-arg groupid=$(id -g) --build-arg username=$(id -un) -t redroid-builder .
+          ls -lh /*.img
+          ls -lh /mnt/*.img
+          exit 1
+          #repo sync -c
+          #docker build --build-arg userid=$(id -u) --build-arg groupid=$(id -g) --build-arg username=$(id -un) -t redroid-builder .
       - name: Rollback release
         if: failure() && needs.prepare_release.outputs.release_id != ''
         uses: author/action-rollback@stable
